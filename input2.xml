@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+  <!-- Copyright (c) 2009, 2010 by Cisco Systems, Inc. All rights reserved.-->
+  <!-- This file is auto generated, please do not modify by hand. -->
+  <!-- -->
+  <class name="com.cisco.xmp.model.managed.standardTechnologies.protocol.routing.common.RoutingNeighborInfo" table="RoutingNeighborInfo" discriminator-value="RoutingNeighborInfo">
+    <id name="instanceId" column="ID" type="long" unsaved-value="0" access="property">
+      <generator class="seqhilo">
+        <param name="max_lo">1000</param>
+      </generator>
+    </id>
+    <discriminator type="string">
+      <column name="CLASSNAME"/>
+    </discriminator>
+    <property name="ChangedinstanceUuid" type="zzzzz">
+      <column name="InstanceUuid" unique="false"/>
+    </property>
+    <property name="ChangeddisplayName" type="string"/>
+    <property name="Changedname" type="string">
+      <column name="Name"/>
+    </property>
+    <property name="Changeddescription" type="ChangedTolong">
+      <column name="Description" length="8000"/>
+    </property>
+    <property name="owningEntityId" type="chnagedTolong">
+      <column name="OwningEntityId" type="string" length="8000"/>
+    </property>
+    <property name="ChangedlocalDiscoveringInterfaceName" type="string">
+      <column name="LocalDiscoveringInterfaceName"/>
+    </property>
+    <bag name="routingPEP" table="RtngNghbrDscvrdVPEP">
+      <key>
+        <column name="DscvrngRtngNghbrInf_ID"/>
+      </key>
+      <many-to-many column="RoutingPEP_ID" class="com.cisco.xmp.model.foundation.connectivity.ProtocolEndpoint"/>
+    </bag>
+    <bag name="routingNeighbourStatistics" cascade="delete" inverse="true">
+      <key>
+        <column name="RoutingNeighbourInfo_ID"/>
+      </key>
+      <one-to-many class="com.cisco.xmp.model.managed.standardTechnologies.protocol.routing.common.RoutingNeighborInfoStatistics"/>
+      <filter name="dataFilter" condition="AuthEntityId in (select gm.memberid from xgs_groupmembers gm where gm.groupid in (:domainIds))"/>
+    </bag>
+    <many-to-one name="discoveringRoutingProcess" class="com.cisco.xmp.model.managed.standardTechnologies.protocol.routing.common.RoutingProcessSettings">
+      <column name="DiscoveringRoutingProcess_ID"/>
+    </many-to-one>
+    <many-to-one name="representedNR" class="com.cisco.xmp.model.foundation.encapsulatedFunctionality.NetworkResource">
+      <column name="RepresentedNR_ID"/>
+    </many-to-one>
+    <set name="routingNeighborSettings" inverse="true">
+      <key>
+        <column name="RoutingNeighborInfo_ID"/>
+      </key>
+      <one-to-many class="com.cisco.xmp.model.managed.standardTechnologies.protocol.routing.common.RoutingNeighborSettings"/>
+      <filter name="dataFilter" condition="AuthEntityId in (select gm.memberid from xgs_groupmembers gm where gm.groupid in (:domainIds))"/>
+    </set>
+    <property name="ChangedauthEntityId" column="AuthEntityId"/>
+    <property name="ChangedauthEntityClass" column="AuthEntityClass"/>
+    <filter name="dataFilter" condition="AuthEntityId in (select gm.memberid from xgs_groupmembers gm where gm.groupid in (:domainIds))"/>
+  </class>
+  <filter-def name="dataFilter" condition="ID in (select gm.memberid from xgs_groupmembers gm where gm.groupid in (:domainIds))">
+    <filter-param name="domainIds" type="long"/>
+  </filter-def>
+  <filter-def name="dataFilter" condition="ID in (select gm.memberid from xgs_groupmembers gm where gm.groupid in (:domainIds))">
+    <filter-param name="domainIds" type="long"/>
+  </filter-def>
+</hibernate-mapping>
