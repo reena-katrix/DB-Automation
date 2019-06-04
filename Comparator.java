@@ -67,7 +67,7 @@ public class Comparator {
 	    {
 	    	if(c2.contains(c1.get(i)))           //if column is in list2
 	    	{
-	    		System.out.println(c1.get(i));
+//	    		System.out.println(c1.get(i));        //common column
 	    		int index1=-1,index2=-1;
 	    		for(int j=0;j<list1.size();j++)          //find properties of both the lists for that colm
 	    		{
