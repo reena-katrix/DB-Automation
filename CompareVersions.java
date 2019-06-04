@@ -3,15 +3,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 public class CompareVersions
 {
-	public void getDiff(File dirA, File dirB) throws IOException
+	public void getDiff(File dirA, File dirB)throws ParserConfigurationException, SAXException,IOException
 	{
 		File[] fileList1 = dirA.listFiles();
 		File[] fileList2 = dirB.listFiles();
@@ -39,17 +44,19 @@ public class CompareVersions
 			{
 				map1.put(fileList2[i].getName(),fileList2[i]);                 //name,location of file
 			}
-			System.out.println("MAP CONENTS:");
-			for(Entry<String, File> m:map1.entrySet())
-			{
-				System.out.println(m.getKey()+" "+m.getValue());
-			}
+//			System.out.println("MAP CONENTS:");
+//			for(Entry<String, File> m:map1.entrySet())
+//			{
+//				System.out.println(m.getKey()+" "+m.getValue());
+//			}
 			compareNow(fileList1, map1);
 		}
 	}
 	
-	public void compareNow(File[] fileArr, HashMap<String, File> map) throws IOException
+	public void compareNow(File[] fileArr, HashMap<String, File> map) throws ParserConfigurationException, SAXException,IOException
 	{
+		ArrayList<String>olderTables = new ArrayList<String>();
+		ArrayList<String>newerTables = new ArrayList<String>();
 		for(int i=0;i<fileArr.length;i++)
 		{
 			String fName = fileArr[i].getName();
@@ -65,12 +72,13 @@ public class CompareVersions
 				{
 					String cSum1 = checksum(fileArr[i]);
 					String cSum2 = checksum(fComp);
-					System.out.println("checksums:"+cSum1+" "+cSum2);
+//					System.out.println("checksums:"+cSum1+" "+cSum2);
 					if(!cSum1.equals(cSum2))
 					{
 						System.out.println(fileArr[i].getName()+"\t\t"+ "different");
 						//add code to pass these two files to check for points of difference
-						
+						CompareFiles compare = new CompareFiles();
+						compare.CompareFileContents(fileArr[i],fComp);
 					}
 					else
 					{
@@ -86,7 +94,7 @@ public class CompareVersions
 				}
 				else                                        //if not then old is not in newer
 				{
-					System.out.println(fileArr[i].getName()+"\t\t"+"only in "+fileArr[i].getParent()+"with location:"+fileArr[i].getAbsolutePath());
+					System.out.println(fileArr[i].getName()+"\t\t"+"only in "+fileArr[i].getParent()+"with location:"+fileArr[i].getParent());
 				}
 			}
 		}
@@ -103,7 +111,7 @@ public class CompareVersions
 			}
 			else               //only in newer
 			{
-				System.out.println(fileFrmMap.getName() +"\t\t"+"only in "+ fileFrmMap.getParent()+"with location:"+fileFrmMap.getAbsolutePath());
+				System.out.println(fileFrmMap.getName() +"\t\t"+"only in "+ fileFrmMap.getParent()+"with location:"+fileFrmMap.getParent());
 			}
 		}
 	}
@@ -119,7 +127,7 @@ public class CompareVersions
 			}
 			else
 			{
-				System.out.println(list[k].getName() +"\t\t"+"only in "+ list[k].getParent()+"with location:"+list[k].getAbsolutePath());
+				System.out.println(list[k].getName() +"\t\t"+"only in "+ list[k].getParent()+"with location:"+list[k].getParent());
 			}
 		}
 	}
