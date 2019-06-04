@@ -12,10 +12,9 @@ public static void storeAttributes(NamedNodeMap rootAtt,ArrayList<HashMap<String
 		for(int i=0;i<rootAtt.getLength();i++)
 		{
 
-           if(rootAtt.item(i).getNodeName().equals("name") ||rootAtt.item(i).getNodeName().equals("type") 
+                if(rootAtt.item(i).getNodeName().equals("name") ||rootAtt.item(i).getNodeName().equals("type") 
 			  ||rootAtt.item(i).getNodeName().equals("unique") ||rootAtt.item(i).getNodeName().equals("length") ||rootAtt.item(i).getNodeName().equals("default"))
 			 res.put(rootAtt.item(i).getNodeName(),rootAtt.item(i).getNodeValue());
-
 		}
 		result.add(res);
     }
@@ -31,7 +30,4 @@ public static void getAllChildren(Node parentNode,ArrayList<HashMap<String, Stri
         }
     }
 }
-
-
-
 }
