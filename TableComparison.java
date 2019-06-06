@@ -2,22 +2,33 @@ import java.io.File;
 import java.io.IOException;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
+import java.util.Scanner;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
 public class TableComparison {
 
+	static String OldVersion = "OldVersion";
+	static String NewVersion = "NewVersion";
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-		// only input is path of folder
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		InputProcessing input = new InputProcessing();
-		// dest,path
-		// input.Extractzip("C:\\Users\\reenaya\\Desktop","C:\\Users\\reenaya\\Desktop/artifacts.zip");
-		// System.out.println("unzip done");
-		input.ExtractJAR("C:\\Users\\reenaya\\Videos", "C:\\Users\\reenaya\\Documents\\xmp-im-mpls-module-3.161.49.jar","hibernate");
-		input.ExtractJAR("C:\\Users\\reenaya\\Music","C:\\Users\\reenaya\\Documents\\xmp-im-mpls-module-3.162.39-SNAPSHOT.jar", "hibernate");
+		//2 folders as input
+		String oldFolder = br.readLine();
+		String newFolder = br.readLine();
+
+		File Version1 = new File(oldFolder); // folder 1
+		new File(OldVersion).mkdirs();
+		input.ExtractFolder(Version1, OldVersion);
+		File Version2 = new File(newFolder); // folder 2
+		new File(NewVersion).mkdirs();
+		input.ExtractFolder(Version2, NewVersion);
 
 		// ----------------------------Comparing two versions-------------------
-		File dir1 = new File("C:\\Users\\reenaya\\Music\\hibernate\\xmp-im-mpls-module");
-		File dir2 = new File("C:\\Users\\reenaya\\Videos\\hibernate\\xmp-im-mpls-module");
+		File dir1 = new File("OldVersion");
+		File dir2 = new File("NewVersion");
 		CompareVersions compare = new CompareVersions();
 		try {
 			compare.getDiff(dir1, dir2);
@@ -25,5 +36,4 @@ public class TableComparison {
 			ie.printStackTrace();
 		}
 	}
-
 }
