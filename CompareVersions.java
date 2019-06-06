@@ -19,11 +19,10 @@ public class CompareVersions {
 		File[] fileList2 = dirB.listFiles();
 		Arrays.sort(fileList1);
 		Arrays.sort(fileList2);
-		System.out.println("Sorted1:" + Arrays.toString(fileList1));
-		System.out.println("Sorted2:" + Arrays.toString(fileList2));
+		// System.out.println("Sorted1:" + Arrays.toString(fileList1));
+		// System.out.println("Sorted2:" + Arrays.toString(fileList2));
 		HashMap<String, File> map1; // name,
 		if (fileList1.length < fileList2.length) {
-			System.out.println("fileList1.length < fileList2.length");
 			map1 = new HashMap<String, File>();
 			for (int i = 0; i < fileList1.length; i++) {
 				map1.put(fileList1[i].getName(), fileList1[i]);
@@ -32,7 +31,8 @@ public class CompareVersions {
 			compareNow(fileList2, map1);
 		} else // older<newer
 		{
-			System.out.println("fileList2.length <= fileList1.length" + fileList2.length + " " + fileList1.length);
+			// System.out.println("fileList2.length <= fileList1.length" +
+			// fileList2.length + " " + fileList1.length);
 			map1 = new HashMap<String, File>();
 			for (int i = 0; i < fileList2.length; i++) {
 				map1.put(fileList2[i].getName(), fileList2[i]); // name,location
@@ -59,13 +59,17 @@ public class CompareVersions {
 					String cSum2 = checksum(fComp);
 					// System.out.println("checksums:"+cSum1+" "+cSum2);
 					if (!cSum1.equals(cSum2)) {
-						System.out.println(fileArr[i].getName() + "\t\t" + "different");
+						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
+								+ "\t" + "different from \t" + " " + fComp.getName() + "\t" + "at location:\t"
+								+ fComp.getAbsolutePath());
 						// add code to pass these two files to check for points
 						// of difference
 						CompareFiles compare = new CompareFiles();
 						compare.CompareFileContents(fileArr[i], fComp);
 					} else {
-						System.out.println(fileArr[i].getName() + "\t\t" + "identical");
+						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
+								+ "\tidentical to " + "\t" + fComp.getName() + "\t" + "at location:\t"
+								+ fComp.getAbsolutePath());
 					}
 				}
 			} else // if shorter file not found in bigger one
