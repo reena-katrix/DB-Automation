@@ -41,20 +41,18 @@ public class InputProcessing {
 		}
 	}
 
-	public static void listFilesForFolder(final File folder) throws IOException {
-		System.out.println(folder.length());
+	public static void listFilesForFolder(final File folder, String dest) throws IOException {
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.getAbsolutePath().endsWith("jar")) {
-				System.out.println(fileEntry.getAbsolutePath());
-				ExtractJAR("C:\\Users\\reenaya\\Music", fileEntry.getAbsolutePath(), "hibernate");
+				ExtractJAR(dest, fileEntry.getAbsolutePath(), "hibernate");
 
 			}
 		}
 	}
 
-	public static void ExtractFolder(File FolderPath) throws IOException {
+	public static void ExtractFolder(File FolderPath, String dest) throws IOException {
 
-		listFilesForFolder(FolderPath);
+		listFilesForFolder(FolderPath, dest);
 
 	}
 }
