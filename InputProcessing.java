@@ -37,14 +37,26 @@ public class InputProcessing {
 
 				fos.close();
 				is.close();
+			} else if (!fileName2.endsWith("/") && entry.getName().indexOf(folderName) == 0
+					&& entry.getName().endsWith("xml") && !entry.getName().contains("view")) {
+				InputStream is = jar.getInputStream(entry);
+				FileOutputStream fos = new FileOutputStream(f);
+				while (is.available() > 0) {
+					fos.write(is.read());
+				}
+
+				fos.close();
+				is.close();
 			}
 		}
+
 	}
 
 	public static void listFilesForFolder(final File folder, String dest) throws IOException {
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.getAbsolutePath().endsWith("jar")) {
 				ExtractJAR(dest, fileEntry.getAbsolutePath(), "hibernate");
+				ExtractJAR(dest, fileEntry.getAbsolutePath(), "ddlschema");
 
 			}
 		}
