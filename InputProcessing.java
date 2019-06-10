@@ -28,7 +28,7 @@ public class InputProcessing {
 			fileName2 = destinationDir + File.separator + entry.getName();
 			File f = new File(fileName2);
 			if (!fileName2.endsWith("/") && entry.getName().indexOf(folderName) == 0
-					&& entry.getName().endsWith("xml")) {
+					&& entry.getName().endsWith("hbm.xml")) {
 				InputStream is = jar.getInputStream(entry);
 				FileOutputStream fos = new FileOutputStream(f);
 				while (is.available() > 0) {
