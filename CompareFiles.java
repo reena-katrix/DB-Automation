@@ -16,7 +16,11 @@ public class CompareFiles {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		Document doc = dbf.newDocumentBuilder().parse(dirA);
 		doc.getDocumentElement().normalize();
-		NodeList pageNode = doc.getElementsByTagName("property");
+		NodeList pageNode = null;
+		if(dirA.getName().endsWith("hbm.xml"))
+			pageNode = doc.getElementsByTagName("property");
+		else if (dirA.getName().endsWith(".xml"))
+			pageNode = doc.getElementsByTagName("constraint");
 		return pageNode;
 	}
 
@@ -66,7 +70,7 @@ public class CompareFiles {
 		// System.out.println(Wholefinal);
 
 		Comparator comparator = new Comparator();
-		comparator.Test(Whole, Wholefinal, colheads1, colheads2, dirA, dirB);
+		comparator.Test(Whole, Wholefinal, colheads1, colheads2);
 
 	}
 }
