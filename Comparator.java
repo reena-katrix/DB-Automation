@@ -1,120 +1,138 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.*;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Set;
 
-public class Comparator {
+import javax.xml.parsers.ParserConfigurationException;
 
-	void AddedDeleted(HashMap<String, String> h1, HashMap<String, String> h2, String col) {
-		Iterator iter = h1.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			if (h2.get(entry.getKey()) == null)
-				System.out.println(col + ": " + "removed attribues: " + entry.getKey() + "=" + entry.getValue());
+import org.xml.sax.SAXException;
 
-		}
+public class CompareVersions {
+	public void getDiff(File dirA, File dirB) throws ParserConfigurationException, SAXException, IOException {
+		File[] fileList1 = dirA.listFiles();
+		File[] fileList2 = dirB.listFiles();
+		Arrays.sort(fileList1);
+		Arrays.sort(fileList2);
+		// System.out.println("Sorted1:" + Arrays.toString(fileList1));
+		// System.out.println("Sorted2:" + Arrays.toString(fileList2));
+		HashMap<String, File> map1; // name,
+		if (fileList1.length < fileList2.length) {
+			map1 = new HashMap<String, File>();
+			for (int i = 0; i < fileList1.length; i++) {
+				map1.put(fileList1[i].getName(), fileList1[i]);
+			}
 
-		Iterator iter2 = h2.entrySet().iterator();
-
-		while (iter2.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter2.next();
-			if (h1.get(entry.getKey()) == null)
-				System.out.println(col + ": " + "added attributes :" + entry.getKey() + " =" + entry.getValue());
-
+			compareNow(fileList2, map1);
+		} else // older<newer
+		{
+			// System.out.println("fileList2.length <= fileList1.length" +
+			// fileList2.length + " " + fileList1.length);
+			map1 = new HashMap<String, File>();
+			for (int i = 0; i < fileList2.length; i++) {
+				map1.put(fileList2[i].getName(), fileList2[i]); // name,location
+																// of file
+			}
+			compareNow(fileList1, map1);
 		}
 	}
 
-	void updatedPoints(HashMap<String, String> h1, HashMap<String, String> h2, String col) {
-		Iterator iter = h1.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			if (h2.get(entry.getKey()) != null) {
-				if (!entry.getValue().equals(h2.get(entry.getKey())))
-					System.out.println(col + " :" + entry.getKey() + "=" + entry.getValue() + " is changed to "
-							+ entry.getKey() + "=" + h2.get(entry.getKey()));
-			}
-		}
-	}
-
-	void Test(ArrayList<ArrayList<HashMap<String, String>>> list1, ArrayList<ArrayList<HashMap<String, String>>> list2,
-			ArrayList<String> c1, ArrayList<String> c2) {
-
-		// System.out.println(Col2);
-		// System.out.println("--------------Removed Columns-------------");
-		for (int i = 0; i < c1.size(); i++) {
-			if (c2.contains(c1.get(i)) == false) {
-				System.out.println(c1.get(i) + " " + " column is Removed");
-			}
-		}
-		// System.out.println("--------------Added Columns-------------");
-		for (int i = 0; i < c2.size(); i++) {
-			if (c1.contains(c2.get(i)) == false) {
-				System.out.println(c2.get(i) + " " + " column is Added");
-			}
-		}
-
-		// System.out.println("--------------Updated Columns-------------");
-		for (int i = 0; i < c1.size(); i++) {
-			if (c2.contains(c1.get(i))) // if column is in list2
+	public void compareNow(File[] fileArr, HashMap<String, File> map)
+			throws ParserConfigurationException, SAXException, IOException {
+		for (int i = 0; i < fileArr.length; i++) {
+			String fName = fileArr[i].getName();
+			File fComp = map.get(fName);
+			map.remove(fName);
+			if (fComp != null) // shorter file is found in bigger one
 			{
-				// System.out.println(c1.get(i)); //common column
-				int index1 = -1, index2 = -1;
-				for (int j = 0; j < list1.size(); j++) // find properties of
-														// both the lists for
-														// that colm
+				if (fComp.isDirectory()) // check if directory
 				{
-					ArrayList<HashMap<String, String>> print = list1.get(j);
-
-					HashMap<String, String> map = print.get(0); // each list
-																// details
-					if (map.containsValue(c1.get(i))) {
-						index1 = j;
-						break;
+					getDiff(fileArr[i], fComp);
+				} else // else check if same or diff contents
+				{
+					String cSum1 = checksum(fileArr[i]);
+					String cSum2 = checksum(fComp);
+					// System.out.println("checksums:"+cSum1+" "+cSum2);
+					if (!cSum1.equals(cSum2)) {
+						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getParent() + "\t"
+								+ "different from \t" + " " + fComp.getName() + "\t" + "at location:\t"
+								+ fComp.getParent());
+						// add code to pass these two files to check for points
+						// of difference
+						CompareFiles compare = new CompareFiles();
+						compare.CompareFileContents(fileArr[i], fComp);
+					} else {
+						// System.out.println(fileArr[i].getName() + "\t at
+						// location:\t" + fileArr[i].getParent()
+						// + "\tidentical to " + "\t" + fComp.getName() + "\t" +
+						// "at location:\t"
+						// + fComp.getParent());
 					}
 				}
-
-				for (int j = 0; j < list2.size(); j++) // find properties of
-														// both the lists for
-														// that colm
+			} else // if shorter file not found in bigger one
+			{
+				if (fileArr[i].isDirectory()) // check if old is directory
 				{
-					ArrayList<HashMap<String, String>> print = list2.get(j);
-
-					HashMap<String, String> map = print.get(0); // each list
-																// details
-					if (map.containsValue(c1.get(i))) // CORRECTION
-					{
-						index2 = j;
-						break;
-					}
-				}
-				// System.out.println(index1+" "+index2);
-				// now we have indexes to compare details at them.
-				ArrayList<HashMap<String, String>> comp1 = list1.get(index1);
-				ArrayList<HashMap<String, String>> comp2 = list2.get(index2);
-				// System.out.println(c1.get(i) + " is updated with following
-				// changes:");
-				String col = c1.get(i);
-				HashMap<String, String> colm1 = comp1.get(0);
-				HashMap<String, String> colm2 = comp2.get(0);
-				// System.out.println("changes in column :");
-				AddedDeleted(colm1, colm2, col);
-				updatedPoints(colm1, colm2, col);
-
-				// System.out.println("changes in column objetcs:");
-				for (int p = 1; p < comp1.size(); p++) {
-					for (int s = 1; s < comp2.size(); s++) {
-						HashMap<String, String> change1 = comp1.get(p);
-						HashMap<String, String> change2 = comp2.get(s);
-						String column = c1.get(i) + "\tReferences";
-						AddedDeleted(change1, change2, column);
-						updatedPoints(change1, change2, column);
-
-					}
+					traverseDirectory(fileArr[i]); // if yes traverse it
+				} else // if not then old is not in newer
+				{
+					System.out.println(fileArr[i].getName() + "\t\t" + "only in " + fileArr[i].getParent());
 				}
 			}
 		}
-		return;
+		Set<String> set = map.keySet(); // set of all keys
+		Iterator<String> it = set.iterator();
+		while (it.hasNext()) {
+			String n = it.next();
+			File fileFrmMap = map.get(n);
+			map.remove(n);
+			if (fileFrmMap.isDirectory()) {
+				traverseDirectory(fileFrmMap);
+			} else // only in newer
+			{
+				System.out.println(fileFrmMap.getName() + "\t\t" + "only in " + fileFrmMap.getParent());
+			}
+		}
+	}
+
+	public void traverseDirectory(File dir) {
+		File[] list = dir.listFiles();
+		for (int k = 0; k < list.length; k++) {
+			if (list[k].isDirectory()) {
+				traverseDirectory(list[k]);
+			} else {
+				System.out.println(list[k].getName() + "\t\t" + "only in " + list[k].getParent());
+			}
+		}
+	}
+
+	public String checksum(File file) {
+		try {
+			InputStream fin = new FileInputStream(file);
+			java.security.MessageDigest md5er = MessageDigest.getInstance("MD5");
+			byte[] buffer = new byte[1024];
+			int read;
+			do {
+				read = fin.read(buffer);
+				if (read > 0)
+					md5er.update(buffer, 0, read);
+			} while (read != -1);
+			fin.close();
+			byte[] digest = md5er.digest();
+			if (digest == null)
+				return null;
+			String strDigest = "0x";
+			for (int i = 0; i < digest.length; i++) {
+				strDigest += Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1).toUpperCase();
+			}
+			return strDigest;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
