@@ -66,7 +66,7 @@ public class CompareFiles {
 		// System.out.println(Wholefinal);
 
 		Comparator comparator = new Comparator();
-		comparator.Test(Whole, Wholefinal, colheads1, colheads2);
+		comparator.Test(Whole, Wholefinal, colheads1, colheads2, dirA, dirB);
 
 	}
 }
