@@ -19,8 +19,6 @@ public class CompareVersions {
 		File[] fileList2 = dirB.listFiles();
 		Arrays.sort(fileList1);
 		Arrays.sort(fileList2);
-		// System.out.println("Sorted1:" + Arrays.toString(fileList1));
-		// System.out.println("Sorted2:" + Arrays.toString(fileList2));
 		HashMap<String, File> map1; // name,
 		if (fileList1.length < fileList2.length) {
 			map1 = new HashMap<String, File>();
@@ -59,19 +57,18 @@ public class CompareVersions {
 					String cSum2 = checksum(fComp);
 					// System.out.println("checksums:"+cSum1+" "+cSum2);
 					if (!cSum1.equals(cSum2)) {
-						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getParent() + "\t"
-								+ "different from \t" + " " + fComp.getName() + "\t" + "at location:\t"
+						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
+								+ "\t" + "different from \t" + " " + fComp.getName() + "\t" + "at location:\t"
 								+ fComp.getParent());
 						// add code to pass these two files to check for points
 						// of difference
 						CompareFiles compare = new CompareFiles();
 						compare.CompareFileContents(fileArr[i], fComp);
+						System.out.println();
 					} else {
-						// System.out.println(fileArr[i].getName() + "\t at
-						// location:\t" + fileArr[i].getParent()
-						// + "\tidentical to " + "\t" + fComp.getName() + "\t" +
-						// "at location:\t"
-						// + fComp.getParent());
+//						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
+//								+ "\tidentical to " + "\t" + fComp.getName() + "\t" + "at location:\t"
+//								+ fComp.getAbsolutePath());
 					}
 				}
 			} else // if shorter file not found in bigger one
@@ -81,7 +78,8 @@ public class CompareVersions {
 					traverseDirectory(fileArr[i]); // if yes traverse it
 				} else // if not then old is not in newer
 				{
-					System.out.println(fileArr[i].getName() + "\t\t" + "only in " + fileArr[i].getParent());
+					System.out.println(fileArr[i].getName() + "\t" + "only in " + fileArr[i].getParent());
+					System.out.println();
 				}
 			}
 		}
@@ -95,7 +93,8 @@ public class CompareVersions {
 				traverseDirectory(fileFrmMap);
 			} else // only in newer
 			{
-				System.out.println(fileFrmMap.getName() + "\t\t" + "only in " + fileFrmMap.getParent());
+				System.out.println(fileFrmMap.getName() + "\t" + "only in " + fileFrmMap.getParent());
+				System.out.println();
 			}
 		}
 	}
@@ -106,7 +105,8 @@ public class CompareVersions {
 			if (list[k].isDirectory()) {
 				traverseDirectory(list[k]);
 			} else {
-				System.out.println(list[k].getName() + "\t\t" + "only in " + list[k].getParent());
+				System.out.println(list[k].getName() + "\t" + "only in " + list[k].getParent());
+				System.out.println();
 			}
 		}
 	}
