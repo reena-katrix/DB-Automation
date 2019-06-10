@@ -31,8 +31,8 @@ public class TableComparison {
 		input.ExtractFolder(Version2, NewVersion);           //src,dest
 
 		// ----------------------------Comparing two versions-------------------
-		File dir1 = new File("OldVersion");
-		File dir2 = new File("NewVersion");
+		File dir1 = new File(OldVersion);
+		File dir2 = new File(NewVersion);
 		CompareVersions compare = new CompareVersions();
 		try {
 			compare.getDiff(dir1, dir2);
