@@ -12,13 +12,14 @@ public class XMLparsing {
 
 			if (rootAtt.item(i).getNodeName().equals("name") || rootAtt.item(i).getNodeName().equals("type")
 					|| rootAtt.item(i).getNodeName().equals("unique") || rootAtt.item(i).getNodeName().equals("length")
-					|| rootAtt.item(i).getNodeName().equals("default"))
+					|| rootAtt.item(i).getNodeName().equals("default")
+					|| rootAtt.item(i).getNodeName().equals("operation"))
 				res.put(rootAtt.item(i).getNodeName(), rootAtt.item(i).getNodeValue());
 
 		}
 		result.add(res);
 	}
-
+	
 	public static void getAllChildren(Node parentNode, ArrayList<HashMap<String, String>> result) {
 		NodeList childList = parentNode.getChildNodes();
 		for (int i = 0; i < childList.getLength(); i++) {
@@ -30,5 +31,24 @@ public class XMLparsing {
 			}
 		}
 	}
+	//for ddlschema
+	public static void storeDDLattributes(NamedNodeMap rootAtt, ArrayList<String> res) {
+		for (int i = 0; i < rootAtt.getLength(); i++) {
 
+			if (rootAtt.item(i).getNodeName().equals("name")) 
+				res.add(rootAtt.item(i).getNodeValue());
+
+		}
+	}
+	public static void getAllDDLchildren(Node parentNode, ArrayList<String> result) {
+		NodeList childList = parentNode.getChildNodes();
+		for (int i = 0; i < childList.getLength(); i++) {
+			Node node = childList.item(i); // ith child
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				NamedNodeMap attributes = node.getAttributes();
+				storeDDLattributes(attributes, result);
+
+			}
+		}
+	}
 }
