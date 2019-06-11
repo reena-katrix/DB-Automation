@@ -44,7 +44,7 @@ public class CompareFiles {
 				Wholeddl1.add(ddl1);
 				
 			}
-			System.out.println("ddl1" + Wholeddl1);
+//			System.out.println("ddl1" + Wholeddl1);
 			
 			NodeList nodelist2 = getNodes(dirB);
 			ArrayList<ArrayList<String> > Wholeddl2 = new ArrayList<ArrayList<String>> ();
@@ -60,9 +60,9 @@ public class CompareFiles {
 				Wholeddl2.add(ddl2);
 				
 			}
-			System.out.println("ddl2" + Wholeddl2);
+//			System.out.println("ddl2" + Wholeddl2);
 			Comparator compare = new Comparator();
-			compare.TestDDL(Wholeddl1, Wholeddl2);
+			compare.TestDDL(Wholeddl1, Wholeddl2, dirA, dirB);
 		}
 		// ----------------------------ddlschema ended---------------------------
 		// --------------------property code---------------------
@@ -110,7 +110,7 @@ public class CompareFiles {
 //		System.out.println(Wholefinal);
 
 		Comparator comparator = new Comparator();
-		comparator.Test(Whole, Wholefinal, colheads1, colheads2);
+		comparator.Test(Whole, Wholefinal, colheads1, colheads2, dirA, dirB);
 		System.out.println();
 
 	}
