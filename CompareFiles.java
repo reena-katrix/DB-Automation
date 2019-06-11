@@ -17,7 +17,7 @@ public class CompareFiles {
 		Document doc = dbf.newDocumentBuilder().parse(dirA);
 		doc.getDocumentElement().normalize();
 		NodeList pageNode = null;
-		if(dirA.getName().endsWith("hbm.xml"))
+		if (dirA.getName().endsWith("hbm.xml"))
 			pageNode = doc.getElementsByTagName("property");
 		else if (dirA.getName().endsWith(".xml"))
 			pageNode = doc.getElementsByTagName("constraint");
@@ -27,6 +27,46 @@ public class CompareFiles {
 	public void CompareFileContents(File dirA, File dirB)
 			throws ParserConfigurationException, SAXException, IOException {
 		// to store one file contents
+		// --------------------ddlschema code---------------------
+		if (!dirA.getName().contains("hbm.xml") && !(dirB.getName().contains("hbm.xml"))) {
+			NodeList nodelist = getNodes(dirA);
+			XMLparsing parse = new XMLparsing();
+			ArrayList<ArrayList<String> > Wholeddl1 = new ArrayList<ArrayList<String>> ();
+			
+			for (int i = 0; i < nodelist.getLength(); i++) {
+				ArrayList<String> ddl1 = new ArrayList<String>();
+				// to store one column contents
+				Node node = nodelist.item(i); // each property or each column
+												// heading
+				NamedNodeMap attributes = node.getAttributes();
+				parse.storeDDLattributes(attributes, ddl1);
+				parse.getAllDDLchildren(node, ddl1);
+				Wholeddl1.add(ddl1);
+				
+			}
+			System.out.println("ddl1" + Wholeddl1);
+			
+			NodeList nodelist2 = getNodes(dirB);
+			ArrayList<ArrayList<String> > Wholeddl2 = new ArrayList<ArrayList<String>> ();
+			
+			for (int i = 0; i < nodelist2.getLength(); i++) {
+				ArrayList<String> ddl2 = new ArrayList<String>();
+				// to store one column contents
+				Node node = nodelist2.item(i); // each property or each column
+												// heading
+				NamedNodeMap attributes = node.getAttributes();
+				parse.storeDDLattributes(attributes, ddl2);
+				parse.getAllDDLchildren(node, ddl2);
+				Wholeddl2.add(ddl2);
+				
+			}
+			System.out.println("ddl2" + Wholeddl2);
+			Comparator compare = new Comparator();
+			compare.TestDDL(Wholeddl1, Wholeddl2);
+		}
+		// ----------------------------ddlschema ended---------------------------
+		// --------------------property code---------------------
+		else{
 		NodeList nodelist1 = getNodes(dirA);
 		ArrayList<ArrayList<HashMap<String, String>>> Whole = new ArrayList<ArrayList<HashMap<String, String>>>();
 		ArrayList<String> colheads1 = new ArrayList<>();
@@ -46,7 +86,7 @@ public class CompareFiles {
 			colheads1.add(col1[i].getName());
 			// col1[i].printColumn(); //to print column details
 		}
-		// System.out.println(Whole);
+//		System.out.println(Whole);
 		// for another file
 		NodeList nodelist2 = getNodes(dirB);
 		// to store one file contents
@@ -67,10 +107,12 @@ public class CompareFiles {
 			colheads2.add(col2[i].getName());
 			// col2[i].printColumn();
 		}
-		// System.out.println(Wholefinal);
+//		System.out.println(Wholefinal);
 
 		Comparator comparator = new Comparator();
 		comparator.Test(Whole, Wholefinal, colheads1, colheads2);
+		System.out.println();
 
+	}
 	}
 }
