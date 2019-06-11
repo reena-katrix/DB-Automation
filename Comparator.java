@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,26 +96,54 @@ public class Comparator {
 				ArrayList<HashMap<String, String>> comp2 = list2.get(index2);
 				// System.out.println(c1.get(i) + " is updated with following
 				// changes:");
+				if(!comp1.equals(comp2)){
 				String col = c1.get(i);
 				HashMap<String, String> colm1 = comp1.get(0);
 				HashMap<String, String> colm2 = comp2.get(0);
 				// System.out.println("changes in column :");
 				AddedDeleted(colm1, colm2, col);
 				updatedPoints(colm1, colm2, col);
+				}
 
 				// System.out.println("changes in column objetcs:");
 				for (int p = 1; p < comp1.size(); p++) {
 					for (int s = 1; s < comp2.size(); s++) {
 						HashMap<String, String> change1 = comp1.get(p);
 						HashMap<String, String> change2 = comp2.get(s);
+						if(!change1.equals(change2)){
 						String column = c1.get(i) + "\tReferences";
 						AddedDeleted(change1, change2, column);
 						updatedPoints(change1, change2, column);
-
+						}
 					}
 				}
 			}
 		}
 		return;
+	}
+
+	void TestDDL(ArrayList<ArrayList<String>> ddl1, ArrayList<ArrayList<String>> ddl2) {
+		if(!ddl1.equals(ddl2)){
+		for (int i = 0; i < ddl1.size(); i++) {
+			ArrayList<String>one,one1;
+			one = ddl1.get(i);one1 = ddl1.get(i);
+			for(int j=0;j<ddl2.size();j++){
+				ArrayList<String>two,two1 ;
+				two = ddl2.get(j);two1 = ddl2.get(j);
+				if(one.size()>0 && two.size()>0 && one.get(0).equals(two.get(0)) && !one.containsAll(two)){            //same BK
+					
+					//added BKs
+					two1.removeAll(one1);
+					if(two1.size()>0)
+						System.out.println(two.get(0)+"Added BKs:\t"+two1);
+					//removed BKs
+					one1.removeAll(two);
+					if(one1.size()>0)
+						System.out.println(one.get(0)+"Removed BKs:\t"+one1);
+					
+				}
+			}
+		}
+		}
 	}
 }
