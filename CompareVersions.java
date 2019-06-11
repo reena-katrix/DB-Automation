@@ -57,8 +57,8 @@ public class CompareVersions {
 					String cSum2 = checksum(fComp);
 					// System.out.println("checksums:"+cSum1+" "+cSum2);
 					if (!cSum1.equals(cSum2)) {
-						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
-								+ "\t" + "different from \t" + " " + fComp.getName() + "\t" + "at location:\t"
+						System.out.println(fileArr[i].getName() + "\t at \t" + fileArr[i].getParent()
+								+ "\t" + "different from \t" + " " + fComp.getName() + "\t" + "at \t"
 								+ fComp.getParent());
 						// add code to pass these two files to check for points
 						// of difference
@@ -67,7 +67,7 @@ public class CompareVersions {
 						System.out.println();
 					} else {
 //						System.out.println(fileArr[i].getName() + "\t at location:\t" + fileArr[i].getAbsolutePath()
-//								+ "\tidentical to " + "\t" + fComp.getName() + "\t" + "at location:\t"
+//								+ "\t identical to " + "\t" + fComp.getName() + "\t" + "at location:\t"
 //								+ fComp.getAbsolutePath());
 					}
 				}
