@@ -4,16 +4,10 @@ import java.util.Map.Entry;
 
 class ColumnDetails {
 
-	String name;
-	String type;
+	String name = " ";
+	String type = " ";
+	String BK = " ";
 	ArrayList<ColumnObjects> obj = new ArrayList<ColumnObjects>();
-
-	ColumnDetails() // default constructor
-	{
-		this.name = " ";
-		this.type = " ";
-
-	}
 
 	// to add column attributes
 	ColumnDetails(ArrayList<HashMap<String, String>> result) {
@@ -34,7 +28,6 @@ class ColumnDetails {
 				break;
 			}
 		}
-
 		// to process childs
 		for (int i = 1; i < result.size(); i++) {
 			if (!result.get(i).isEmpty()) {
@@ -51,6 +44,14 @@ class ColumnDetails {
 			for (int i = 0; i < obj.size(); i++)
 				obj.get(i).printColumnObjectAttriInfo();
 		}
+	}
+
+	void setBK(String input) {
+		this.BK = input;
+	}
+
+	String getBK() {
+		return this.BK;
 	}
 
 	String getName() {
