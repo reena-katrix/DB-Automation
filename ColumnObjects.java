@@ -2,22 +2,12 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class ColumnObjects {
-	String name;
-	String type;
-	String unique;
-	String defaultValue;
-	String length;
-
-	ColumnObjects() // default constructor
-	{
-		this.name = " ";
-		this.type = " ";
-		this.unique = " ";
-		this.defaultValue = " ";
-		this.length = " ";
-
-	}
-
+	String name=" ";
+	String type=" ";
+	String unique=" ";
+	String defaultValue=" ";
+	String length=" ";
+	
 	// to add column attributes
 	public ColumnObjects(HashMap<String, String> temp) {
 		for (Entry<String, String> m : temp.entrySet()) {
@@ -44,14 +34,30 @@ public class ColumnObjects {
 		}
 	}
 
-	String getObjName() {
-		return this.name;
-	}
-
 	void printColumnObjectAttriInfo() {
 		System.out.println("Object name" + " " + "=" + " " + this.name + " " + "type" + " " + "=" + " " + this.type
 				+ " " + "unique" + " " + "=" + " " + this.unique + " " + "default" + " " + "=" + " " + this.defaultValue
 				+ " " + "length" + " " + "=" + " " + this.length);
+	}
+
+	String getObjName() {
+			return this.name;
+	}
+
+	String getObjType() {
+			return this.type;
+	}
+
+	String getObjUnique() {
+			return this.unique;
+	}
+
+	String getObjdefaultValue() {
+			return this.defaultValue;
+	}
+
+	String getObjlength() {
+			return this.length;
 	}
 
 }
