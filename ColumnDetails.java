@@ -37,13 +37,13 @@ class ColumnDetails {
 	}
 
 	void printColumn() {
-		System.out.println("Column Details:");
+//		System.out.println("Column Details:");
 		System.out.println("Column name" + " " + "=" + " " + this.name + " " + "type" + " " + "=" + " " + this.type);
-		if (obj.size() > 0) {
-			System.out.println("Column objects Info:");
-			for (int i = 0; i < obj.size(); i++)
-				obj.get(i).printColumnObjectAttriInfo();
-		}
+//		if (obj.size() > 0) {
+//			System.out.println("Column objects Info:");
+//			for (int i = 0; i < obj.size(); i++)
+//				obj.get(i).printColumnObjectAttriInfo();
+//		}
 	}
 
 	void setBK(String input) {
