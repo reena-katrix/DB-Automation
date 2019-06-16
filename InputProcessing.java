@@ -34,7 +34,6 @@ public class InputProcessing {
 				while (is.available() > 0) {
 					fos.write(is.read());
 				}
-
 				fos.close();
 				is.close();
 			} else if (!fileName2.endsWith("/") && entry.getName().indexOf(folderName) == 0
@@ -44,12 +43,10 @@ public class InputProcessing {
 				while (is.available() > 0) {
 					fos.write(is.read());
 				}
-
 				fos.close();
 				is.close();
 			}
 		}
-
 	}
 
 	public static void listFilesForFolder(final File folder, String dest) throws IOException {
@@ -57,14 +54,11 @@ public class InputProcessing {
 			if (fileEntry.getAbsolutePath().endsWith("jar")) {
 				ExtractJAR(dest, fileEntry.getAbsolutePath(), "hibernate");
 				ExtractJAR(dest, fileEntry.getAbsolutePath(), "ddlschema");
-
 			}
 		}
 	}
 
 	public static void ExtractFolder(File FolderPath, String dest) throws IOException {
-
 		listFilesForFolder(FolderPath, dest);
-
 	}
 }
