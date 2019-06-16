@@ -27,7 +27,6 @@ public class XMLparsing {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				NamedNodeMap attributes = node.getAttributes();
 				storeAttributes(attributes, result);
-
 			}
 		}
 	}
@@ -37,7 +36,6 @@ public class XMLparsing {
 
 			if (rootAtt.item(i).getNodeName().equals("name")) 
 				res.add(rootAtt.item(i).getNodeValue());
-
 		}
 	}
 	public static void getAllDDLchildren(Node parentNode, ArrayList<String> result) {
@@ -47,7 +45,6 @@ public class XMLparsing {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				NamedNodeMap attributes = node.getAttributes();
 				storeDDLattributes(attributes, result);
-
 			}
 		}
 	}
