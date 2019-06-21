@@ -4,65 +4,83 @@ import java.util.Map.Entry;
 
 class ColumnDetails {
 
-	String name = " ";
+	String propertyName = " ";
+	String componentName = " ";
+	String columnName = " ";
 	String type = " ";
-	String BK = " ";
-	ArrayList<ColumnObjects> obj = new ArrayList<ColumnObjects>();
+	String unique = " ";
+	String defaultValue = " ";
+	String length = " ";
+	String notNull = " ";
 
-	// to add column attributes
-	ColumnDetails(ArrayList<HashMap<String, String>> result) {
-		// to process parent i.e.column
-		HashMap<String, String> parent = result.get(0);
-		for (Entry<String, String> m : parent.entrySet()) {
-			String key = m.getKey();
-			switch (key) {
-			case "name":
-				if (m.getValue() != null)
-					this.name = m.getValue();
-				break;
-			case "type":
-				if (m.getValue() != null)
-					this.type = m.getValue();
-				break;
-			default:
-				break;
-			}
-		}
-		// to process childs
-		for (int i = 1; i < result.size(); i++) {
-			if (!result.get(i).isEmpty()) {
-				obj.add(new ColumnObjects(result.get(i)));
-			}
-		}
+	void setPropertyName(String input) {
+		this.propertyName = input;
 	}
 
-	void printColumn() {
-//		System.out.println("Column Details:");
-		System.out.println("Column name" + " " + "=" + " " + this.name + " " + "type" + " " + "=" + " " + this.type);
-//		if (obj.size() > 0) {
-//			System.out.println("Column objects Info:");
-//			for (int i = 0; i < obj.size(); i++)
-//				obj.get(i).printColumnObjectAttriInfo();
-//		}
+	String getPropertyName() {
+		return this.propertyName;
 	}
 
-	void setBK(String input) {
-		this.BK = input;
+	void setColumnName(String input) {
+		this.columnName = input;
 	}
 
-	String getBK() {
-		return this.BK;
+	String getColumnName() {
+		return this.columnName;
 	}
 
-	String getName() {
-		return this.name;
+	void setComponentName(String input) {
+		this.componentName = input;
+	}
+
+	String getComponentName() {
+		return this.componentName;
+	}
+
+	void setType(String input) {
+		this.type = input;
 	}
 
 	String getType() {
 		return this.type;
 	}
 
-	ArrayList<ColumnObjects> getColObj() {
-		return obj;
+	void setUnique(String input) {
+		this.unique = input;
 	}
+
+	String getUnique() {
+		return this.unique;
+	}
+
+	void setDefaultValue(String input) {
+		this.defaultValue = input;
+	}
+
+	String getDefaultValue() {
+		return this.defaultValue;
+	}
+
+	void setLength(String input) {
+		this.length = input;
+	}
+
+	String getLength() {
+		return this.length;
+	}
+
+	void setNotNull(String input) {
+		this.notNull = input;
+	}
+
+	String getNotNull() {
+		return this.notNull;
+	}
+
+	void printColumn() {
+		System.out.println("propertyName:" + this.propertyName + "\tcolumnName:\t" + this.columnName
+				+ "\tcomponentName:\t" + this.componentName + "\ttype:\t" + this.type + "\tunique:\t" + this.unique
+				+ "\tdefaultValue:\t" + this.defaultValue + "\tlength:\t" + this.length + "notNull:\t" + this.notNull);
+	}
+
 }
