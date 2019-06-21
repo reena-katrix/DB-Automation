@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 public class CompareVersion {
 
 	public void getDiff(File dirA, File dirB) throws ParserConfigurationException, SAXException, IOException {
-		// System.out.println(dirA.getName()+" "+dirB.getName()+"\tDIRECTORY");
 		File[] fileList1 = dirA.listFiles();
 		File[] fileList2 = dirB.listFiles();
 		Arrays.sort(fileList1);
@@ -30,8 +29,7 @@ public class CompareVersion {
 			}
 
 			compareNow(fileList2, map1);
-		} else // older<newer
-		{
+		} else {
 			map1 = new HashMap<String, File>();
 			for (int i = 0; i < fileList2.length; i++) {
 				map1.put(fileList2[i].getName(), fileList2[i]); // name,location
@@ -57,17 +55,12 @@ public class CompareVersion {
 					getDiff(fileArr[i], fComp);
 				} else // else check if same or diff contents
 				{
-					// System.out.println(fileArr[i]+" "+ fComp);
-
 					String cSum1 = checksum(fileArr[i]);
 					String cSum2 = checksum(fComp);
-					// System.out.println("checksums:"+cSum1+" "+cSum2);
 					if (!cSum1.equals(cSum2)) {
-
 						CompareFiles compare = new CompareFiles();
 						compare.CompareFileContent(fileArr[i], fComp);
 					} else {
-						// fileArr[i].delete();
 						// TablesIdentical.add(fileArr[i].getName());
 					}
 				}
@@ -78,14 +71,15 @@ public class CompareVersion {
 					traverseDirectory(fileArr[i]); // it
 				} else // if not then old is not in newer
 				{
-					// System.out.println(fileArr[i].getName()+"\tdeletedadded");
-					// System.out.println(fileArr[i].getName() + "\t" + "only in
-					// " + fileArr[i].getParent());
-					if (fileArr[i].getParent().contains("ExtractedEPNM0") && fileArr[i].getName().contains("hbm.xml"))
-						TableComparison.TablesDeleted.add(fileArr[i].getName());
+					if (fileArr[i].getParent().contains("ExtractedEPNM0")
+							&& !fileArr[i].getParent().contains("ExtractedEPNM1")
+							&& fileArr[i].getName().contains("hbm.xml"))
+						TableComparison.TablesDeleted
+								.add(fileArr[i].getName().substring(0, fileArr[i].getName().indexOf(".")));
 					else if (fileArr[i].getParent().contains("ExtractedEPNM1")
-							&& fileArr[i].getParent().contains("hbm.xml"))
-						TableComparison.TablesAdded.add(fileArr[i].getName());
+							&& fileArr[i].getName().contains("hbm.xml"))
+						TableComparison.TablesAdded
+								.add(fileArr[i].getName().substring(0, fileArr[i].getName().indexOf(".")));
 				}
 			}
 		}
@@ -99,13 +93,14 @@ public class CompareVersion {
 				traverseDirectory(fileFrmMap);
 			} else // only in newer
 			{
-				// System.out.println(fileFrmMap.getName()+"\tdeletedadded");
-				// System.out.println(fileFrmMap.getName() + "\t" + "only in " +
-				// fileFrmMap.getParent());
-				if (fileFrmMap.getParent().contains("ExtractedEPNM0") && fileFrmMap.getName().contains("hbm.xml"))
-					TableComparison.TablesDeleted.add(fileFrmMap.getName());
+				if (fileFrmMap.getParent().contains("ExtractedEPNM0")
+						&& !fileFrmMap.getParent().contains("ExtractedEPNM1")
+						&& fileFrmMap.getName().contains("hbm.xml"))
+					TableComparison.TablesDeleted
+							.add(fileFrmMap.getName().substring(0, fileFrmMap.getName().indexOf(".")));
 				else if (fileFrmMap.getParent().contains("ExtractedEPNM1") && fileFrmMap.getName().contains("hbm.xml"))
-					TableComparison.TablesAdded.add(fileFrmMap.getName());
+					TableComparison.TablesAdded
+							.add(fileFrmMap.getName().substring(0, fileFrmMap.getName().indexOf(".")));
 			}
 		}
 	}
@@ -116,14 +111,11 @@ public class CompareVersion {
 			if (list[k].isDirectory()) {
 				traverseDirectory(list[k]);
 			} else {
-				// System.out.println(list[k].getName()+"\tdeletedadded");
-
-				// System.out.println(list[k].getName() + "\t" + "only in " +
-				// list[k].getParent());
-				if (list[k].getParent().contains("ExtractedEPNM0") && list[k].getName().contains("hbm.xml"))
-					TableComparison.TablesDeleted.add(list[k].getName());
+				if (list[k].getParent().contains("ExtractedEPNM0") && !list[k].getParent().contains("ExtractedEPNM1")
+						&& list[k].getName().contains("hbm.xml"))
+					TableComparison.TablesDeleted.add(list[k].getName().substring(0, list[k].getName().indexOf(".")));
 				else if (list[k].getParent().contains("ExtractedEPNM1") && list[k].getName().contains("hbm.xml"))
-					TableComparison.TablesAdded.add(list[k].getName());
+					TableComparison.TablesAdded.add(list[k].getName().substring(0, list[k].getName().indexOf(".")));
 			}
 		}
 	}
