@@ -16,7 +16,7 @@ public class BK_Class {
 		} else if (dirParent.getParent().contains("ExtractedEPNM0")) {
 			this.name = list.get(0);
 			for (int i = 1; i < list.size(); i++)
-				updatedColumns.add(list.get(i));
+				previousColumns.add(list.get(i));
 		}
 	}
 
